@@ -1,0 +1,423 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family:sans-serif;
+  scroll-behavior: smooth;
+}
+
+.container {
+  background: #FFF;
+}
+
+.mock-app-header {
+  background: #fff;
+  height: 70px;
+}
+
+.app-sidebar {
+  height: calc(100vh - 70px);
+  background: #000;
+  width: 70px;
+}
+
+.app-region{
+  display:flex;
+  height: calc(100vh - 70px);
+}
+
+.app-content{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content-title-bar {
+  display:flex;
+  padding: 32px;
+  justify-content: space-between;
+  align-items: center;
+  background:#FFF;
+  border: 1px solid #efefef;
+  border-width: 1px 0;
+}
+
+.app-content-title-bar-name {
+  font-size: 30px;
+  font-weight: bold;
+  }
+
+.permissions-container {
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  overflow:hidden;
+}
+
+.permissions-list {
+    flex-grow:1;
+    max-width:1000px;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    }
+
+.permission {
+  background:#FFF;
+  padding:32px 24px 32px 16px ;
+  border-bottom: 1px solid #eee;
+}
+
+.permission:last-child {
+  border-bottom:none
+}
+
+
+.permission .permission-title-less-toggle, .permission.show .permission-title-more-toggle {
+  display:none;
+}
+
+.permission.show .permission-title-less-toggle {
+    display:block;
+}
+
+.permission-title-toggle {
+  cursor:pointer;
+}
+
+
+.permission-title {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.permission-title-name {
+  font-size: 21px;
+  margin-left: 24px;
+  font-weight: bold;
+}
+
+.permission-title-checkbox {
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+}
+
+.permission-content {
+  opacity: .6;
+  cursor:not-allowed;
+  transition:all .5s ease
+}
+
+.active .permission-content {
+  opacity: 1;
+  cursor:auto;
+  transition:all .5s ease
+}
+
+.permissions-anchor-list {
+  width:200px;
+  min-width:200px;
+  padding:32px 24px;
+  overflow:auto;
+  flex-grow:0;
+}
+
+.permissions-anchor-list a {
+  display:block;
+  padding: 4px 16px;
+  color:teal;
+  text-decoration:none;
+}
+
+.permissions-anchor-list a.selected {
+  font-weight:bold;
+  color:#000;
+  border-left: 3px solid #000;
+}
+
+.permission-visibility {
+  padding: 16px 32px 0 64px;
+}
+
+.permission-visibility label {
+  display:none;
+  /* display:block; */
+  padding:4px 0;
+}
+
+.permission-table {
+  padding: 16px 16px 0 64px;
+}
+
+.permission-table table {
+  width:100%;
+  text-align:left;
+  border-spacing: 0;
+}
+
+
+th.name {
+  width: 60%;
+}
+
+td, th{
+  width:10%;
+  text-align:center;
+  border-bottom:1px solid #eee;
+  padding:4px 0;
+  vertical-align:top;
+}
+
+td:first-child, th:first-child{
+  width:40%;
+  text-align:left;
+  padding-left:4px;
+}
+
+td:last-child, th:last-child{
+  text-align:left;
+  width: 20%;
+}
+
+.related-permissions label {
+  display:flex;
+  margin-bottom:4px;
+  align-items:center;
+}
+.related-permissions label input {
+  flex-shrink: 0;
+  margin-right:4px;
+}
+
+input[type=radio] {
+  margin-right: 8px;
+}
+
+.master-check {
+  display:none;
+}
+
+
+.fake-check{
+  position:relative;
+  display:block;
+  background:#e6e6e6;
+  width:40px;
+  height:16px;
+  border-radius:10px;
+}
+
+.fake-check:after{
+  content:"";
+  display:block;
+  background:#B3B3B3;
+  width:24px;
+  height:24px;
+  border-radius:100%;
+  position:absolute;
+  top:-5px;
+  left:-3px;
+  transition:all .3s ease;
+}
+
+.master-check:checked + .fake-check:after{
+  left:20px;
+  background:#41B8AC;
+}
+
+.master-check:checked + .fake-check {
+  background:#84D9D3;
+}
+
+/* class applies to select element itself, not a wrapper element */
+.select-css {
+  display: inline-block;
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
+  padding: .6em 1.4em .5em .8em;
+  width: 33%;
+  max-width: 100%; /* useful when width is set to anything other than 100% */
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  /* note: bg image below uses 2 urls. The first is an svg data uri for the arrow icon, and the second is the gradient. 
+    for the icon, if you want to change the color, be sure to use `%23` instead of `#`, since it's a url. You can also swap in a different svg icon or an external image reference
+    
+  */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat, repeat;
+  /* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
+  background-position: right .7em top 50%, 0 0;
+  /* icon size, then gradient */
+  background-size: .65em auto, 100%;
+}
+/* Hide arrow icon in IE browsers */
+.select-css::-ms-expand {
+  display: none;
+}
+/* Hover style */
+.select-css:hover {
+  border-color: #888;
+}
+/* Focus style */
+.select-css:focus {
+  border-color: #aaa;
+  /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
+  box-shadow: 0 0 1px 3px teal;
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222; 
+  outline: none;
+}
+
+/* Set options to normal weight */
+.select-css option {
+  font-weight:normal;
+}
+
+/* Support for rtl text, explicit support for Arabic and Hebrew */
+*[dir="rtl"] .select-css, :root:lang(ar) .select-css, :root:lang(iw) .select-css {
+  background-position: left .7em top 50%, 0 0;
+  padding: .6em .8em .5em 1.4em;
+}
+
+/* Disabled styles */
+.select-css:disabled, .select-css[aria-disabled=true] {
+  color: graytext;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22graytext%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+    linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+}
+
+.select-css:disabled:hover, .select-css[aria-disabled=true] {
+  border-color: #aaa;
+}
+
+.help-icon {
+  display:inline-block;
+  line-height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background: teal;
+  text-align: center;
+  position: relative;
+  margin-left: 8px;
+}
+
+.active .help-icon{
+  display:inline-block;
+}
+
+.help-icon:before {
+  content: "?";
+  color: #FFF;
+}
+
+.help-text {
+  position: absolute;
+  padding: 24px;
+  left: 200%;
+  transform: translateY(-40%);
+  width: 200px;
+  background: #FFF;
+  text-align: left;
+  color: #333;
+  border: 1px solid #8b8b8b;
+  border-radius: 4px;
+  box-shadow: 0 4px 11px 4px rgba(0,0,0,.12);
+  opacity:0;
+  pointer-events:none;
+  transition: all .3s ease;
+}
+
+.help-icon:hover .help-text {
+  display:block;
+  left: 150%;
+  transform: translateY(-40%);
+  opacity:1;
+  pointer-events:all;
+}
+
+.active-pill {
+  line-height: 20px;
+  background: rgb(227, 255, 255);
+  color: rgb(0, 71, 71);
+  border: 1px solid teal;
+  font-size: 13px;
+  border-radius: 13px;
+  padding: 0 4px;
+  margin-bottom: 2px;
+  display: inline-block;
+  top: -2px;
+  position: relative;
+  margin-left: 9px;
+}
+
+
+.btn-primary {
+  height: 38px;
+  background: #41b8ac;
+  color: #FFF;
+  padding: 0 16px;
+  -webkit-appearance: button;
+  border:none;
+  border-radius:4px;
+}
+
+.btn-secondary {
+  height: 38px;
+  background: #FFF;
+  color: #333;
+  padding: 0 16px;
+  -webkit-appearance: button;
+  border:none;
+  border-radius:4px;
+}
+
+.modal-content {
+  position: fixed;
+  width: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  padding: 24px;
+  background: #FFF;
+}
+
+.modal-header {
+  padding:16px 0;
+  font-size:20px
+}
+.modal-body {
+  padding: 16px 0;
+}
+
+.modal-footer{
+  padding: 16px 0;
+}
+
+.modal{
+  content:"";
+  opacity:0;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:rgba(0,0,0,.30);
+  pointer-events: none;
+  transition: all .3s ease;
+}
+
+.modal.show{
+ opacity:1;
+ pointer-events:all;
+
+}
