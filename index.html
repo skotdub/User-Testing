@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+
+    <meta name="theme-color" content="#fafafa" />
+
+    <style>
+      body {
+  height: 100vh;
+  width: 100vw;
+  font-family:sans-serif;
+  scroll-behavior: smooth;
+}
+
+.container {
+  background: #FFF;
+}
+
+.mock-app-header {
+  background: #fff;
+  height: 70px;
+}
+
+.app-sidebar {
+  height: calc(100vh - 70px);
+  background: #000;
+  width: 70px;
+}
+
+.app-region{
+  display:flex;
+  height: calc(100vh - 70px);
+}
+
+.app-content{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content-title-bar {
+  display:flex;
+  padding: 32px;
+  justify-content: space-between;
+  align-items: center;
+  background:#FFF;
+  border: 1px solid #efefef;
+  border-width: 1px 0;
+}
+
+.app-content-title-bar-name {
+  font-size: 30px;
+  font-weight: bold;
+  }
+
+.permissions-container {
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  overflow:hidden;
+}
+
+.permissions-list {
+    flex-grow:1;
+    max-width:1000px;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    }
+
+.permission {
+  background:#FFF;
+  padding:32px 24px 32px 16px ;
+  border-bottom: 1px solid #eee;
+}
+
+.permission:last-child {
+  border-bottom:none
+}
+
+
+.permission .permission-title-less-toggle, .permission.show .permission-title-more-toggle {
+  display:none;
+}
+
+.permission.show .permission-title-less-toggle {
+    display:block;
+}
+
+.permission-title-toggle {
+  cursor:pointer;
+}
+
+
+.permission-title {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.permission-title-name {
+  font-size: 21px;
+  margin-left: 24px;
+  font-weight: bold;
+}
+
+.permission-title-checkbox {
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+}
+
+.permission-content {
+  opacity: .6;
+  cursor:not-allowed;
+  transition:all .5s ease
+}
+
+.active .permission-content {
+  opacity: 1;
+  cursor:auto;
+  transition:all .5s ease
+}
+
+.permissions-anchor-list {
+  width:200px;
+  min-width:200px;
+  padding:32px 24px;
+  overflow:auto;
+  flex-grow:0;
+}
+
+.permissions-anchor-list a {
+  display:block;
+  padding: 4px 16px;
+  color:teal;
+  text-decoration:none;
+}
+
+.permissions-anchor-list a.selected {
+  font-weight:bold;
+  color:#000;
+  border-left: 3px solid #000;
+}
+
+.permission-visibility {
+  padding: 16px 32px 0 64px;
+}
+
+.permission-visibility label {
+  display:none;
+  /* display:block; */
+  padding:4px 0;
+}
+
+.permission-table {
+  padding: 16px 16px 0 64px;
+}
+
+.permission-table table {
+  width:100%;
+  text-align:left;
+  border-spacing: 0;
+}
+
+
+th.name {
+  width: 60%;
+}
+
+td, th{
+  width:10%;
+  text-align:center;
+  border-bottom:1px solid #eee;
+  padding:4px 0;
+  vertical-align:top;
+}
+
+td:first-child, th:first-child{
+  width:40%;
+  text-align:left;
+  padding-left:4px;
+}
+
+td:last-child, th:last-child{
+  text-align:left;
+  width: 20%;
+}
+
+.related-permissions label {
+  display:flex;
+  margin-bottom:4px;
+  align-items:center;
+}
+.related-permissions label input {
+  flex-shrink: 0;
+  margin-right:4px;
+}
+
+input[type=radio] {
+  margin-right: 8px;
+}
+
+.master-check {
+  display:none;
+}
+
+
+.fake-check{
+  position:relative;
+  display:block;
+  background:#e6e6e6;
+  width:40px;
+  height:16px;
+  border-radius:10px;
+}
+
+.fake-check:after{
+  content:"";
+  display:block;
+  background:#B3B3B3;
+  width:24px;
+  height:24px;
+  border-radius:100%;
+  position:absolute;
+  top:-5px;
+  left:-3px;
+  transition:all .3s ease;
+}
+
+.master-check:checked + .fake-check:after{
+  left:20px;
+  background:#41B8AC;
+}
+
+.master-check:checked + .fake-check {
+  background:#84D9D3;
+}
+
+/* class applies to select element itself, not a wrapper element */
+.select-css {
+  display: inline-block;
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
+  padding: .6em 1.4em .5em .8em;
+  width: 33%;
+  max-width: 100%; /* useful when width is set to anything other than 100% */
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  /* note: bg image below uses 2 urls. The first is an svg data uri for the arrow icon, and the second is the gradient. 
+    for the icon, if you want to change the color, be sure to use `%23` instead of `#`, since it's a url. You can also swap in a different svg icon or an external image reference
+    
+  */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat, repeat;
+  /* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
+  background-position: right .7em top 50%, 0 0;
+  /* icon size, then gradient */
+  background-size: .65em auto, 100%;
+}
+/* Hide arrow icon in IE browsers */
+.select-css::-ms-expand {
+  display: none;
+}
+/* Hover style */
+.select-css:hover {
+  border-color: #888;
+}
+/* Focus style */
+.select-css:focus {
+  border-color: #aaa;
+  /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
+  box-shadow: 0 0 1px 3px teal;
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222; 
+  outline: none;
+}
+
+/* Set options to normal weight */
+.select-css option {
+  font-weight:normal;
+}
+
+/* Support for rtl text, explicit support for Arabic and Hebrew */
+*[dir="rtl"] .select-css, :root:lang(ar) .select-css, :root:lang(iw) .select-css {
+  background-position: left .7em top 50%, 0 0;
+  padding: .6em .8em .5em 1.4em;
+}
+
+/* Disabled styles */
+.select-css:disabled, .select-css[aria-disabled=true] {
+  color: graytext;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22graytext%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+    linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+}
+
+.select-css:disabled:hover, .select-css[aria-disabled=true] {
+  border-color: #aaa;
+}
+
+.help-icon {
+  display:inline-block;
+  line-height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background: teal;
+  text-align: center;
+  position: relative;
+  margin-left: 8px;
+}
+
+.active .help-icon{
+  display:inline-block;
+}
+
+.help-icon:before {
+  content: "?";
+  color: #FFF;
+}
+
+.help-text {
+  position: absolute;
+  padding: 24px;
+  left: 200%;
+  transform: translateY(-40%);
+  width: 200px;
+  background: #FFF;
+  text-align: left;
+  color: #333;
+  border: 1px solid #8b8b8b;
+  border-radius: 4px;
+  box-shadow: 0 4px 11px 4px rgba(0,0,0,.12);
+  opacity:0;
+  pointer-events:none;
+  transition: all .3s ease;
+}
+
+.help-icon:hover .help-text {
+  display:block;
+  left: 150%;
+  transform: translateY(-40%);
+  opacity:1;
+  pointer-events:all;
+}
+
+.active-pill {
+  line-height: 20px;
+  background: rgb(227, 255, 255);
+  color: rgb(0, 71, 71);
+  border: 1px solid teal;
+  font-size: 13px;
+  border-radius: 13px;
+  padding: 0 4px;
+  margin-bottom: 2px;
+  display: inline-block;
+  top: -2px;
+  position: relative;
+  margin-left: 9px;
+}
+
+
+.btn-primary {
+  height: 38px;
+  background: #41b8ac;
+  color: #FFF;
+  padding: 0 16px;
+  -webkit-appearance: button;
+  border:none;
+  border-radius:4px;
+}
+
+.btn-secondary {
+  height: 38px;
+  background: #FFF;
+  color: #333;
+  padding: 0 16px;
+  -webkit-appearance: button;
+  border:none;
+  border-radius:4px;
+}
+
+.modal-content {
+  position: fixed;
+  width: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  padding: 24px;
+  background: #FFF;
+}
+
+.modal-header {
+  padding:16px 0;
+  font-size:20px
+}
+.modal-body {
+  padding: 16px 0;
+}
+
+.modal-footer{
+  padding: 16px 0;
+}
+
+.modal{
+  content:"";
+  opacity:0;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:rgba(0,0,0,.30);
+  pointer-events: none;
+  transition: all .3s ease;
+}
+
+.modal.show{
+ opacity:1;
+ pointer-events:all;
+
+}
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="mock-app-header"></div>
+
+      <div class="app-region">
+        <div class="app-sidebar"></div>
+        <div class="app-content">
+          <div class="app-content-title-bar">
+            <div class="app-content-title-bar-name">Permission Bundle</div>
+            <div class="app-content-title-bar-actions">
+              <button class="btn btn-primary">Save</button>
+            </div>
+          </div>
+          <div class="permissions-container">
+            <div class="permissions-anchor-list">
+              <a href="#appointments">Appointments</a>
+              <a href="#badges">Badges</a>
+              <a href="#deliveries">Deliveries</a>
+              <a href="#documents">Documents</a>
+              <a href="#email_templates">Email Templates</a>
+              <a href="#experiences">Experiences</a>
+              <a href="#guest_history">Guest History</a>
+              <a href="#guest_labs">Guest Labs</a>
+              <a href="#guestbook">Guestbook</a>
+              <a href="#guestio">Guestio</a>
+              <a href="#hosts">Hosts</a>
+              <a href="#integrations">Integrations</a>
+              <a href="#invites">Invites</a>
+              <a href="#locations">Locations</a>
+              <a href="#outlook_tokens">Outlook Tokens</a>
+              <a href="#parking">Parking</a>
+              <a href="#permissions">Permissions</a>
+              <a href="#physical_access">Physical Access</a>
+              <a href="#prefrerences">Preferences</a>
+              <a href="#themes">Themes</a>
+              <a href="#watchlist">Watchlist</a>
+              <a href="#Webhooks">Webhooks</a>
+            </div>
+            <div class="permissions-list">
+              <div class="permission" id="appointments">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="appointments-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Appointments </span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="appointments-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="appointments-radio" />Shared -
+                      See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="appointments-radio" />Owner -
+                      See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Appointments</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="badges">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="badges-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Badges</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="badges-radio" disabled />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="badges-radio" disabled />Shared
+                      - See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="badges-radio" disabled />Owner
+                      - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Badges</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="deliveries">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="deliveries-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Deliveries</span>
+                  </label>
+                </div>
+                <div class="permission-content"></div>
+              </div>
+              <div class="permission" id="documents">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="documents-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Documents</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="documents-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input
+                        type="radio"
+                        name="documents-radio"
+                        disabled
+                      />Shared - See records owned by other users that have this
+                      permission bundle.</label
+                    >
+                    <label
+                      ><input
+                        type="radio"
+                        name="documents-radio"
+                        disabled
+                      />Owner - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Documents</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="email_templates">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="email_templates-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Email templates</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="email_templates-radio" />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="email_templates-radio" />Shared
+                      - See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="email_templates-radio" />Owner
+                      - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Email templates</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="experiences">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="experiences-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Experiences</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="experiences-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="experiences-radio" />Shared -
+                      See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="experiences-radio" />Owner -
+                      See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Experiences</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Scan ID page</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>GuestConnect</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="guest_history">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="guest_history-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Guest history</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Notes</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="permission" id="guest_labs">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="guest_labs-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Guest labs</span>
+                  </label>
+                </div>
+                <div class="permission-content"></div>
+              </div>
+
+              <div class="permission" id="guestbook" data-requires="#locations">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="guestbook-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Guestbook</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="guestbook-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input
+                        type="radio"
+                        name="guestbook-radio"
+                        disabled
+                      />Shared - See records owned by other users that have this
+                      permission bundle.</label
+                    >
+                    <label
+                      ><input
+                        type="radio"
+                        name="guestbook-radio"
+                        disabled
+                      />Owner - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permissions</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Sign-in and sign-outs</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Export</label
+                          >
+                          <label
+                            ><input type="checkbox" disabled />Approve /
+                            Reject</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Sign-in photos</td>
+                        <td></td>
+                        <td></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Mass notifications</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label><input type="checkbox" disabled />Send</label>
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Salesforce Logs</td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Realtime watchlist checks</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label><input type="checkbox" disabled />Allow</label>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="guest_io">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="guest_io-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Guest IO</span>
+                  </label>
+                </div>
+                <div class="permission-content"></div>
+              </div>
+
+              <div class="permission" id="hosts">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="hosts-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Hosts</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Hosts</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="integrations">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="integrations-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Integrations</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Integrations</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="invites">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="invites-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Invites</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="invites-radio" disabled />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="invites-radio" disabled />Shared
+                      - See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="invites-radio" disabled />Owner
+                      - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Invites</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Approve /
+                            Reject</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Email notifications</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label><input type="checkbox" disabled />Send</label>
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Parking stalls</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Assign</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Visitor registrations</td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Realtime watchlist checks</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label><input type="checkbox" disabled />Check</label>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="locations">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="locations-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Locations</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="locations-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input
+                        type="radio"
+                        name="locations-radio"
+                        disabled
+                      />Shared - See records owned by other users that have this
+                      permission bundle.</label
+                    >
+                    <label
+                      ><input
+                        type="radio"
+                        name="locations-radio"
+                        disabled
+                      />Owner - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Locations</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Location groups</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Devices</td>
+                        <td><input type="checkbox" class="view" disabled /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="view-dependent"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="view-dependent"
+                            disabled
+                          />
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Email preferences</td>
+                        <td><input type="checkbox" class="view" disabled /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="view-dependent"
+                            disabled
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            class="view-dependent"
+                            disabled
+                          />
+                        </td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="outlook_tokens">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="outlook_tokens-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Outlook tokens</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="outlook_tokens-radio" />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="outlook_tokens-radio" />Shared -
+                      See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="outlook_tokens-radio" />Owner -
+                      See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Outlook tokens</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="parking">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="parking-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Parking</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="parking-radio" disabled />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="parking-radio" disabled />Shared
+                      - See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="parking-radio" disabled />Owner
+                      - See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Parking lots and stalls</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="permissions">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="permissions-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name"
+                      >Permission bundles</span
+                    >
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="permissions-radio" />All - See
+                      all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="permissions-radio" />Shared -
+                      See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="permissions-radio" />Owner -
+                      See only self-owned records.</label
+                    >
+                    <select class="select-css" disabled>
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Permission bundles</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Export</label
+                          >
+                          <label
+                            ><input type="checkbox" disabled />Set user
+                            default</label
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="physical_access">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="physical_access-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Physical Access</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Physical Access</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="preferences">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="preferences-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Preferences</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Users</td>
+                        <td><input type="checkbox" disabled class="view" /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="view-dependent"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="view-dependent"
+                          />
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Domains</td>
+                        <td><input type="checkbox" disabled class="view" /></td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="view-dependent"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="view-dependent"
+                          />
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Customer Success (support) user</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Mass ownership transfers</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>SMS settings</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>System email branding</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Data Retention Policy</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <label
+                            ><input type="checkbox" disabled />Manage</label
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="themes">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="themes-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Themes</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-visibility">
+                    <div class="visibility-label">Visibility:</div>
+                    <label
+                      ><input type="radio" name="themes-radio" disabled />All -
+                      See all records across the account</label
+                    >
+                    <label>
+                      <input type="radio" name="themes-radio" disabled />Shared
+                      - See records owned by other users that have this permission bundle.
+                      bundle.</label
+                    >
+                    <label
+                      ><input type="radio" name="themes-radio" disabled />Owner
+                      - See only self-owned records.</label
+                    >
+                    <select disabled class="select-css">
+                      <option>All</option>
+                      <option>Shared</option>
+                      <option>Owner</option>
+                    </select>
+                    <span class="help-icon">
+                      <span class="help-text"
+                        ><div>
+                          <strong>All </strong>- See all records across the
+                          account.
+                        </div><br/>
+                        <div>
+                          <strong>Shared </strong>- See records owned by other
+                          users that have this permission bundle.
+                        </div><br/>
+                        <div>
+                          <strong>Owner </strong>- See only self-owned records.
+                        </div></span
+                      ></span
+                    >
+                  </div>
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Themes</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="watchlist">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="watchlist-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Watchlist</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Watchlist</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="permission" id="webhooks">
+                <div class="permission-title">
+                  <label class="permission-title-checkbox">
+                    <input
+                      type="checkbox"
+                      class="master-check"
+                      id="webhooks-checkbox"
+                    />
+                    <span class="fake-check"></span>
+                    <span class="permission-title-name">Webhooks</span>
+                  </label>
+                </div>
+                <div class="permission-content">
+                  <div class="permission-table">
+                    <table>
+                      <tr>
+                        <th class="name">Permission</th>
+                        <th>View</th>
+                        <th>Create / Edit</th>
+                        <th>Delete</th>
+                        <th>Other</th>
+                      </tr>
+                      <tr class="related-permissions">
+                        <td>Webhooks</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            disabled
+                            class="default-view"
+                          />
+                        </td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td><input type="checkbox" disabled /></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal disable-modal">
+      <div class="modal-content">
+      <div class="modal-header">This will also turn off <strong>Guestbook</strong></div>
+      <div class="modal-body"><strong>Guestbook</strong> requires this permission, so it will also be disabled. Do you want to disable both permissions?</div>
+      <div class="modal-footer"><button class="btn- btn-primary accept disable">Yes, disable both</button><button class="btn- btn-secondary disable-cancel">Cancel</button></div>
+      </div>
+    </div>
+    <div class="modal enable-modal">
+      <div class="modal-content">
+      <div class="modal-header">This will also turn on <strong>Locations</strong></div>
+      <div class="modal-body">This permission requires <strong>Locations</strong> to also be enabled. Do you want to enable both permissions?</div>
+      <div class="modal-footer"><button class="btn- btn-primary enable">Yes, enable both</button><button class="btn- btn-secondary enable-cancel">Cancel</button></div>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+    $(".master-check").change(function () {
+      if (this.checked) {
+        $(this).closest(".permission").addClass("active");
+        $(this)
+          .closest(".permission")
+          .find(".permission-visibility :radio")
+          .prop("disabled", false);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions :checkbox")
+          .prop("disabled", false);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions .default-view")
+          .prop("disabled", true);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions .default-view")
+          .prop("checked", true);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions .default-view")
+          .prop("disabled", true);
+        $(this)
+          .closest(".permission")
+          .find(".select-css")
+          .prop("disabled", false);
+        if ($(this).attr("id")=="guestbook-checkbox" && $("#locations-checkbox").prop("checked")== false) {
+          showEnableModal()
+        }
+      } else {
+        $(this).closest(".permission").removeClass("active");
+        $(this)
+          .closest(".permission")
+          .find(".permission-visibility :radio")
+          .prop("checked", false);
+        $(this)
+          .closest(".permission")
+          .find(".permission-visibility :radio")
+          .prop("disabled", true);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions .default-view")
+          .prop("checked", false);
+        $(this)
+          .closest(".permission")
+          .find(".related-permissions :checkbox")
+          .prop("disabled", true);
+        $(this)
+          .closest(".permission")
+          .find(".select-css")
+          .prop("disabled", true);
+
+          if($(this).attr("id")=="locations-checkbox" && $("#guestbook-checkbox").prop("checked")== true) {
+            showDisableModal()
+        }
+      }
+    });
+
+    function showEnableModal () {
+      $('.enable-modal').addClass('show');
+    }
+    function showDisableModal () {
+      $('.disable-modal').addClass('show');
+    }
+    function hideModal () {
+      $('.modal.show').removeClass('show');
+    }
+
+
+    $(".view-dependent").change(function () {
+      if (
+        $(this).closest(".related-permissions").find(".view-dependent:checked")
+          .length > 0
+      ) {
+        console.log("test");
+        $(this)
+          .closest(".related-permissions")
+          .find(".view")
+          .prop("checked", true);
+        $(this)
+          .closest(".related-permissions")
+          .find(".view")
+          .prop("disabled", true);
+      } else {
+        $(this)
+          .closest(".related-permissions")
+          .find(".view")
+          .prop("disabled", false);
+      }
+    });
+
+    $(".permissions-anchor-list a").click(function () {
+      $(this).siblings().removeClass("selected");
+      $(this).addClass("selected");
+    });
+
+    $(".enable").click(function () {
+      $("#locations-checkbox").prop("checked", true);
+      hideModal ()
+    });
+    $(".disable").click(function () {
+      $("#guestbook-checkbox").prop("checked", false);
+      hideModal ()
+    });
+
+    $(".enable-cancel").click(function () {
+      $("#locations-checkbox").prop("checked", false);
+      $("#guestbook-checkbox").prop("checked", false);
+      hideModal ()
+    });
+    $(".disable-cancel").click(function () {
+      $("#locations-checkbox").prop("checked", true);
+      $("#guestbook-checkbox").prop("checked", true);
+      hideModal ()
+    });
+
+  </script>
+
+
+</html>
