@@ -201,33 +201,35 @@ input[type=radio] {
 
 .fake-check{
   position:relative;
-  display:block;
-  background:#e6e6e6;
-  width:40px;
-  height:16px;
-  border-radius:10px;
+  background:transparent;
+  border:3px solid #e6e6e6;
+  width:24px;
+  height:24px;
+  border-radius:4px;
+  transition:all .3s ease;
 }
 
 .fake-check:after{
-  content:"";
-  display:block;
-  background:#B3B3B3;
+  content:"✓";
+  color:#FFF;
+  display:none;
   width:24px;
-  height:24px;
+  line-height:24px;
   border-radius:100%;
   position:absolute;
-  top:-5px;
-  left:-3px;
+  top:0;
+  left:0;
+  text-align:center;
   transition:all .3s ease;
 }
 
 .master-check:checked + .fake-check:after{
-  left:20px;
-  background:#41B8AC;
+  display:block;
 }
 
 .master-check:checked + .fake-check {
-  background:#84D9D3;
+  background:#41B8AC;
+  border:3px solid transparent;
 }
 
 /* class applies to select element itself, not a wrapper element */
