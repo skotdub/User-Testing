@@ -1,0 +1,325 @@
+<html lang="en">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        --border-color: #ccc;
+      }
+
+      html,
+      body {
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        font-family:sans-serif;
+      }
+      .main {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .app-bar {
+        display: flex;
+        flex-direction: column;
+        height: 70px;
+        border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
+      }
+      .nav-and-content {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+      .content {
+          background:#f2f2f2;
+          flex-grow:1;
+          display:flex;
+      }
+      .nav {
+        background: #333;
+        height: 100%;
+        width: 70px;
+        display: flex;
+        flex-direction: column;
+      }
+      .nav-item {
+        height: 70px;
+        width: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        cursor:pointer;
+      }
+      .nav-item:hover { 
+        background:rgba(255,255,255,.1)
+      }
+
+      .nav-item.selected {
+        background: #EF556B;
+      }
+
+      .nav-item .callout-label {
+          position:absolute;
+          opacity:0;
+          pointer-events:none;
+          transform: translatex(0);
+          transition: all .3s ease;
+          width: 150px;
+          background:#000;
+          color:white;
+          padding:8px;
+          border-radius:4px;
+          left: 70px;
+      }
+
+      .nav-item:not(.selected):hover .callout-label {
+          position:absolute;
+          opacity:1;
+          pointer-events:none;
+          left:75px;
+      }
+
+      .sub-nav{ 
+        width:280px;
+        height:100%;
+      }
+
+      #Visitors {
+
+      }
+      #Settings {
+          display:none;
+        }
+
+      .sub-nav-item {
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+      }
+
+      .sub-nav-item:hover, .sub-nav-item.selected {
+       background:#FFF
+      }
+
+      .sub-nav-item.selected {
+          color:#0A6158;
+      }
+
+
+      .sub-nav-item.level-one {
+        font-size:15px;
+        padding:16px 12px 16px 24px;
+      }
+
+     .sub-nav-item.level-two{
+         visibility:hidden;
+         max-height:0;
+         opacity:0;
+         overflow:hidden;
+         padding: 0 48px;
+         transition:all .3s ease;
+         font-size:14px;
+     }
+
+
+     .sub-nav-item.expanded~.level-two {
+        visibility:visible;
+        max-height:200px;
+        padding: 12px 24px 12px 48px;
+        opacity:1;
+     }
+
+     .sub-nav-item.expanded~.level-two {
+         display:block;
+     }
+
+     .sub-nav-item .chevron{
+        transform: rotate(0deg);
+        transition: all .3s ease;
+     }
+
+     .sub-nav-item.expanded .chevron{
+        transform: rotate(90deg);
+     }
+
+
+     .section-header {
+         font-size:18px;
+         padding:24px;
+     }
+.pages {
+    height: 100%;
+    overflow: auto;
+    flex-grow: 1
+}
+
+     .page:not(#guestbook) {
+         display:none;
+     }
+
+     .page img {
+         padding:32px 48px;
+         width: 1200px;
+     }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="app-bar"></div>
+      <div class="nav-and-content">
+        <div class="nav">
+          <div class="nav-item visitors selected">
+            <span class="material-icons">
+                people_alt
+                </span>
+                <span class="callout-label">
+                    Employee and visitor activity
+                    </span>
+          </div>
+          <div class="nav-item settings">
+            <span class="material-icons">
+                settings_suggest
+                </span>
+                <span class="callout-label">
+                    Configuration
+                    </span>
+          </div>
+          <div class="nav-item deliveries">
+            <span class="material-icons">
+                markunread_mailbox
+                </span>
+                <span class="callout-label">
+                    Deliveries
+                    </span>
+          </div>
+        </div>
+        <div class="content">
+          <div class="sub-nav">
+            <!-- Visitors-->
+           
+            <div class="subnav-section" id="Visitors">
+            <h2 class="section-header">Visitors and Employees</h2>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="guestbook">Guestbook</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="invites">Invites</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="appointments">Appointments</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="hosts">Hosts</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="watchlist">Watchlist</div>
+              </div>
+            </div>
+          <!-- END Visitors-->
+          <!-- Settings-->
+          <div class="subnav-section" id="Settings">
+            <h2 class="section-header">Configuration</h2>
+            <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="account_settings">Account Settings</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="locations">Locations</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one has-children">Users and Permissions<span class="chevron material-icons">
+                    chevron_right
+                    </span></div>
+                <div class="sub-nav-item level-two" data-link="users">Users</div>
+                <div class="sub-nav-item level-two" data-link="permissions">Permissions</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="experiences">Ipad and Registration Experiences</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="themes">Themes</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="email_templates">Email Templates</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="badges">Badges</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="documents">Documents</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="parking">Parking</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="integrations">Integrations</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="labs">Experimental Features</div>
+              </div>
+
+          </div>
+          <!-- END Settings-->
+        </div>
+ <!-- Pages -->
+        <div class="pages">
+            <div class="page" id="guestbook"><img src="Pages/guestbook/screenshot.png"/></div>
+            <div class="page" id="invites"><img src="Pages/invites/screenshot.png"/></div>
+            <div class="page" id="appointments"><img src="Pages/appointments/screenshot.png"/></div>
+            <div class="page" id="hosts"><img src="Pages/hosts/screenshot.png"/></div>
+            <div class="page" id="watchlist"><img src="Pages/watchlist/screenshot.png"/></div>
+            <div class="page" id="account_settings"><img src="Pages/account_settings/screenshot.png"/></div>
+            <div class="page" id="users"><img src="Pages/users/screenshot.png"/></div>
+            <div class="page" id="permissions"><img src="Pages/permissions/screenshot.png"/></div>
+            <div class="page" id="locations"><img src="Pages/locations/screenshot.png"/></div>
+            <div class="page" id="experiences"><img src="Pages/experiences/screenshot.png"/></div>
+            <div class="page" id="themes"><img src="Pages/themes/screenshot.png"/></div>
+            <div class="page" id="email_templates"><img src="Pages/emails/screenshot.png"/></div>
+            <div class="page" id="badges"><img src="Pages/badges/screenshot.png"/></div>
+            <div class="page" id="documents"> <img src="Pages/documents/screenshot.png"/></div>
+            <div class="page" id="parking"><img src="Pages/parking/screenshot.png"/></div>
+            <div class="page" id="integrations"><img src="Pages/integrations/screenshot.png"/></div>
+            <div class="page" id="labs"><img src="Pages/labs/screenshot.png"/></div>
+        </div>
+    </div>
+  </body>
+
+  <script>
+$('.nav-item').click(function() {
+    $('.nav-item').removeClass("selected");
+    $(this).addClass("selected");
+    $('.subnav-section').hide();
+    if ($(this).hasClass("visitors")) {
+        $('#Visitors').fadeIn();
+    }
+    else if ($(this).hasClass("settings")) {
+        $('#Settings').fadeIn();
+    }
+});
+
+$('.sub-nav-item').not('.has-children').click(function() {
+    $('.sub-nav-item').removeClass("selected");
+    $(this).addClass("selected");
+    var link = $(this).attr('data-link');
+    $('.page').hide();
+    $('.page'+'#'+link).show();
+});
+$('.sub-nav-item.level-one.has-children').click(function() {
+    $(this).toggleClass("expanded");
+});
+
+
+
+
+
+  </script>
+</html>
