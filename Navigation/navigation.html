@@ -106,7 +106,11 @@
         align-items:center;
       }
 
-      .sub-nav-item:hover, .sub-nav-item.selected {
+      .sub-nav-item:not(.selected):not(.expanded):hover {
+       background:rgba(255,255,255,.5)
+      }
+
+    .sub-nav-item.selected {
        background:#FFF
       }
 
@@ -210,16 +214,31 @@
             <div class="subnav-section" id="Visitors">
             <h2 class="section-header">Visitors and Employees</h2>
               <div class="sub-nav-group">
-                <div class="sub-nav-item level-one" data-link="guestbook">Guestbook</div>
+                <div class="sub-nav-item level-one has-children" data-link="guestbook">Guestbook<span class="chevron material-icons">
+                  chevron_right
+                  </span></div>
+                <div class="sub-nav-item level-two" data-link="guestbook">All Invites</div>
+                <div class="sub-nav-item level-two" data-link="guestbook">Pending Invites</div>
               </div>
               <div class="sub-nav-group">
-                <div class="sub-nav-item level-one" data-link="invites">Invites</div>
+                <div class="sub-nav-item level-one has-children" data-link="invites">Invites<span class="chevron material-icons">
+                  chevron_right
+                  </span></div>
+                <div class="sub-nav-item level-two" data-link="invites">All Invites</div>
+                <div class="sub-nav-item level-two" data-link="invites">Pending Invites</div>
               </div>
               <div class="sub-nav-group">
                 <div class="sub-nav-item level-one" data-link="appointments">Appointments</div>
               </div>
               <div class="sub-nav-group">
-                <div class="sub-nav-item level-one" data-link="hosts">Hosts</div>
+                <div class="sub-nav-item level-one has-children">Hosts<span class="chevron material-icons">
+                    chevron_right
+                    </span></div>
+                    <div class="sub-nav-item level-two" data-link="hosts">All Hosts</div>
+                    <div class="sub-nav-item level-two" data-link="hosts">Los Angeles Hosts</div>
+                    <div class="sub-nav-item level-two" data-link="hosts">Paris Hosts</div>
+                    <div class="sub-nav-item level-two" data-link="hosts">Tokyo Hosts</div>
+                    <div class="sub-nav-item level-two" data-link="hosts">Vancouver Hosts</div>
               </div>
               <div class="sub-nav-group">
                 <div class="sub-nav-item level-one" data-link="watchlist">Watchlist</div>
@@ -233,14 +252,26 @@
                 <div class="sub-nav-item level-one" data-link="account_settings">Account Settings</div>
               </div>
               <div class="sub-nav-group">
-                <div class="sub-nav-item level-one" data-link="locations">Locations</div>
-              </div>
-              <div class="sub-nav-group">
-                <div class="sub-nav-item level-one has-children">Users and Permissions<span class="chevron material-icons">
+                <div class="sub-nav-item level-one has-children" data-link="locations">Locations<span class="chevron material-icons">
                     chevron_right
                     </span></div>
-                <div class="sub-nav-item level-two" data-link="users">Users</div>
-                <div class="sub-nav-item level-two" data-link="permissions">Permissions</div>
+                    <div class="sub-nav-item level-two" data-link="locations">All Locations</div>
+                    <div class="sub-nav-item level-two" data-link="locations">Los Angeles</div>
+                    <div class="sub-nav-item level-two" data-link="locations">Paris</div>
+                    <div class="sub-nav-item level-two" data-link="locations">Tokyo</div>
+                    <div class="sub-nav-item level-two" data-link="locations">Vancouver</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one has-children" data-link="users">Users<span class="chevron material-icons">
+                    chevron_right
+                    </span></div><div class="sub-nav-item level-two" data-link="users">All users</div>
+                    <div class="sub-nav-item level-two" data-link="users">Los Angeles Users</div>
+                    <div class="sub-nav-item level-two" data-link="users">Paris Users</div>
+                    <div class="sub-nav-item level-two" data-link="users">Tokyo Users</div>
+                    <div class="sub-nav-item level-two" data-link="users">Vancouver Users</div>
+              </div>
+              <div class="sub-nav-group">
+                <div class="sub-nav-item level-one" data-link="permissions">Permissions</div>
               </div>
               <div class="sub-nav-group">
                 <div class="sub-nav-item level-one" data-link="experiences">Ipad and Registration Experiences</div>
@@ -295,26 +326,43 @@
 
   <script>
 $('.nav-item').click(function() {
-    $('.nav-item').removeClass("selected");
-    $(this).addClass("selected");
+    $('.nav-item').removeClass('selected');
+    $(this).addClass('selected');
     $('.subnav-section').hide();
-    if ($(this).hasClass("visitors")) {
+    if ($(this).hasClass('visitors')) {
         $('#Visitors').fadeIn();
     }
-    else if ($(this).hasClass("settings")) {
+    else if ($(this).hasClass('settings')) {
         $('#Settings').fadeIn();
     }
 });
 
-$('.sub-nav-item').not('.has-children').click(function() {
-    $('.sub-nav-item').removeClass("selected");
-    $(this).addClass("selected");
+$('.sub-nav-item.level-one').not('.has-children').click(function() {
+    $('.sub-nav-item').removeClass('selected');
+    $('.sub-nav-item').removeClass('expanded');
+    $(this).addClass('selected');
     var link = $(this).attr('data-link');
     $('.page').hide();
     $('.page'+'#'+link).show();
 });
+
 $('.sub-nav-item.level-one.has-children').click(function() {
-    $(this).toggleClass("expanded");
+    $('.sub-nav-item').removeClass('selected');
+    $('.sub-nav-item').removeClass('expanded');
+    $(this).addClass('expanded');
+    $(this).siblings('.level-two').first().addClass('selected');
+    var link = $(this).siblings('.level-two').first().attr('data-link');
+    $('.page').hide();
+    $('.page'+'#'+link).show();
+});
+
+$('.sub-nav-item.level-two').click(function() {
+    $('.sub-nav-item.level-two').removeClass('selected');
+    $(this).addClass('selected');
+});
+
+$('.sub-nav-item.level-one.has-children').click(function() {
+    $(this).addClass('expanded');
 });
 
 
